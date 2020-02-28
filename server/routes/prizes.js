@@ -60,7 +60,17 @@
   	} else {
   		// Send all
   		res.status(200).send(prizes);
-  	}
+	}
+
+	router.post("./:id", (req,res) => {
+		if(req.params.id) {
+          let idx = prizes.findIndex(prize => prize.id === req.params.id)
+          prizes[idx].quantity = req.body.quantity > 0 ? req.body.quantity : 1
+          res.status(200).send(prizes[idx])
+		}
+	})
   });
+
+
 
   module.exports = router;

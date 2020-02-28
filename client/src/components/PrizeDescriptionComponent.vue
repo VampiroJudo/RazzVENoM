@@ -78,7 +78,7 @@
                 <div class="modal_redeem_text">Redeem for {{ prizes.name }}?</div>
                 </div>
                 <div class="modal-footer">
-                  <button type="button" id="reclamation_btn" class="btn btn-primary" @click="prizes.quantity--;confirmationModal = true;showModal = false">Redeem</button>
+                  <button type="button" id="reclamation_btn" class="btn btn-primary" @click="updatePrizeById();confirmationModal = true;showModal = false">Redeem</button>
                   <button type="button" id="close_btn" class="btn btn-secondary" @click="showModal = false">Cancel</button>
                 </div>
               </div>
@@ -124,6 +124,7 @@ export default {
       prizes: [],
       prize: {},
       showModal: false,
+      confirmationModal: false,
       header: {
         logo: 'instru-win',
         user_name: 'John Smith'
@@ -142,12 +143,19 @@ export default {
   },
   mounted () {
     this.getPrizeById()
+    this.updatePrizeById()
+    // this.noZeroAmount()
   },
   methods: {
     getPrizeById () {
       axios.get('http://localhost:3000/prizes/' + this.prizeId).then(response => {
         this.prizes = response.data
         console.log(response.data)
+      })
+    },
+    updatePrizeById () {
+      axios.post('localhost:3000/prizes/' + this.prizeId, { quantity: this.prizes.quantity - 1 }).then(response => {
+        this.prizes.quantity = response.quantity
       })
     }
   }

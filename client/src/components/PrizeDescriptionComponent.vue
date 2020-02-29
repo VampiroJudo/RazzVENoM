@@ -144,7 +144,6 @@ export default {
   mounted () {
     this.getPrizeById()
     this.updatePrizeById()
-    // this.noZeroAmount()
   },
   methods: {
     getPrizeById () {
@@ -152,11 +151,18 @@ export default {
         this.prizes = response.data
         console.log(response.data)
       })
+        .catch(error => {
+          console.log(error.response)
+        })
     },
     updatePrizeById () {
-      axios.post('localhost:3000/prizes/' + this.prizeId, { quantity: this.prizes.quantity - 1 }).then(response => {
+      axios.post('http://localhost:3000/prizes/' + this.prizeId, { quantity: this.prizes.quantity-- }).then(response => {
         this.prizes.quantity = response.quantity
+        console.log(response.data)
       })
+        .catch(error => {
+          console.log(error.response)
+        })
     }
   }
 }
